@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #FFFEF2;
+  --text: #25515E;
+}
+
+html, body, #__next { height: 100%; }
+body { @apply bg-cream text-ocean antialiased; }
+
+.container {
+  @apply max-w-6xl mx-auto px-4;
+}
+
+/* Simple card */
+.card { @apply bg-white rounded-2xl shadow-soft p-6 border border-breeze/40; }
+.btn-primary { @apply inline-flex items-center justify-center rounded-xl px-5 py-3 bg-leaf text-white font-medium hover:bg-horizon transition; }
+.badge { @apply rounded-full bg-breeze px-3 py-1 text-ocean text-xs font-medium; }
