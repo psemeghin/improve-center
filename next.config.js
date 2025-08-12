@@ -2,25 +2,60 @@
 const nextConfig = {
   async headers() {
     return [
+      // Tudo que está em /public/media/** (banners, logos, ícones, etc.)
       {
-        // tudo que estiver em /public/media/** 
-        source: '/media/:all*',
+        source: "/media/:path*",
         headers: [
-          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+
+      // Fontes próprias em /public/fonts/**
+      {
+        source: "/fonts/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+
+      // Favicons e manifest na raiz de /public
+      {
+        source: "/favicon-32.png",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],
       },
       {
-        // se tiver fontes próprias em /public/fonts/**
-        source: '/fonts/:all*',
+        source: "/favicon-192.png",
         headers: [
-          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],
       },
       {
-        // favicons e manifest na raiz de /public
-        source: '/:file(favicon.svg|favicon-192.png|favicon-512.png|site.webmanifest)',
+        source: "/favicon-512.png",
         headers: [
-          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+      {
+        source: "/favicon.svg",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+      {
+        source: "/site.webmanifest",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+
+      // Assets gerados do Next (JS/CSS) — já vêm bem cacheados,
+      // mas deixamos explícito:
+      {
+        source: "/_next/static/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],
       },
     ];
