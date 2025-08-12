@@ -1,15 +1,32 @@
+// components/Nav.tsx
 import Link from "next/link";
+import { IMAGES } from "./assets";
 
 export default function Nav() {
   return (
-    <header className="bg-white/80 backdrop-blur sticky top-0 z-40 border-b border-breeze/50">
-      <div className="container flex items-center justify-between h-16">
-        <Link href="/" className="font-bold text-ocean text-lg">Improve</Link>
-        <nav className="flex items-center gap-6 text-ocean/90">
-          <Link href="/marketplace" className="hover:text-ocean">Marketplace</Link>
-          <Link href="/conteudo" className="hover:text-ocean">Conteúdo</Link>
-          <Link href="/assinatura" className="hover:text-ocean">Assinatura</Link>
-          <a href="#newsletter" className="btn-primary">Unlock your next level</a>
+    <header className="w-full border-b bg-cream">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+        <Link href="/" className="flex items-center gap-2" aria-label="Improve - Início">
+          {/* SVG não precisa de next/image; usa <img> direto */}
+          <img
+            src={IMAGES.logoLight}
+            alt="Improve"
+            width={168}
+            height={32}
+            className="h-8 w-auto"
+          />
+        </Link>
+
+        <nav className="flex items-center gap-6 text-sm">
+          <Link href="/marketplace" className="hover:underline">Marketplace</Link>
+          <Link href="/conteudo" className="hover:underline">Conteúdo</Link>
+          <Link href="/assinatura" className="hover:underline">Assinatura</Link>
+          <Link
+            href="/#cta"
+            className="rounded-full bg-leaf px-4 py-2 font-medium text-white shadow-soft hover:opacity-90"
+          >
+            Unlock your next level
+          </Link>
         </nav>
       </div>
     </header>
