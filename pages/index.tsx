@@ -1,62 +1,73 @@
-// pages/index.tsx
-import Head from "next/head";
-import { IMAGES } from "../components/assets";
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Home() {
   return (
-    <>
-      <Head>
-        <title>Improve — Wellness. Fitness. Healthiness.</title>
-        <meta name="description" content="Awaken your full potential. Your journey is our commitment." />
-        {/* OG/Twitter (imediato; depois podemos gerar dinâmico) */}
-        <meta property="og:title" content="Improve — Wellness. Fitness. Healthiness." />
-        <meta property="og:description" content="Awaken your full potential. Your journey is our commitment." />
-        <meta property="og:image" content={IMAGES.ogImage} />
-        <meta property="og:type" content="website" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content={IMAGES.ogImage} />
-      </Head>
+    <main className="bg-cream min-h-screen">
+      {/* HERO */}
+      <section className="relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center py-20">
 
-      <main className="bg-cream">
-        <section className="mx-auto grid max-w-6xl items-center gap-8 px-4 py-12 md:grid-cols-2">
-          <div className="space-y-4">
-            <h1 className="text-4xl font-extrabold leading-tight text-ocean md:text-5xl">
-              Wellness. Fitness. <span className="text-leaf">Healthiness.</span>
+          {/* TEXTO */}
+          <div className="md:w-1/2 space-y-6 text-center md:text-left">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight">
+              Wellness. Fitness. Healthness.
             </h1>
-            <p className="max-w-prose text-slate-700">
+            <p className="text-lg text-slate-600">
               Awaken your full potential. Your journey is our commitment.
             </p>
-
-            <div className="flex flex-wrap gap-3 pt-2">
-              <a
+            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+              <Link
                 href="/#cta"
-                className="rounded-full bg-leaf px-5 py-2 text-white shadow-soft hover:opacity-90"
+                className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full text-lg font-semibold shadow"
               >
                 Unlock your next level
-              </a>
-              <span className="rounded-full bg-breeze px-3 py-1 text-xs text-ocean">
-                Science &amp; nature
-              </span>
+              </Link>
+              <Link
+                href="/conteudo"
+                className="bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 px-6 py-3 rounded-full text-lg font-semibold shadow-sm"
+              >
+                Science & nature
+              </Link>
             </div>
-
-            <ul className="mt-6 list-disc pl-5 text-sm text-slate-700">
-              <li>Let nature be your medicine.</li>
-              <li>Energy for your best day.</li>
-              <li>Care that transforms.</li>
-            </ul>
           </div>
 
-          <div className="flex justify-center">
-            <img
-              src={IMAGES.heroLight}
-              alt="Improve — wellness hero"
-              width={960}
-              height={640}
-              className="h-auto w-full rounded-2xl shadow-soft"
+          {/* IMAGEM */}
+          <div className="md:w-1/2 mt-10 md:mt-0 flex justify-center">
+            <Image
+              src="/media/logos/LogoHorizontal-AzulOceanoProfundo.svg"
+              alt="Improve"
+              width={500}
+              height={200}
+              priority
             />
           </div>
-        </section>
-      </main>
-    </>
+        </div>
+      </section>
+
+      {/* FRASES SECUNDÁRIAS */}
+      <section className="bg-white py-12 border-t border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+          <div>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">Let nature be your medicine</h3>
+            <p className="text-slate-600 text-sm">
+              We combine science and natural principles to enhance your performance and health.
+            </p>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">Energy for your best day</h3>
+            <p className="text-slate-600 text-sm">
+              Supplementation and habits designed to keep you energized from morning to night.
+            </p>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">Care that transforms</h3>
+            <p className="text-slate-600 text-sm">
+              Long-term well-being starts with the right choices today — and we help you every step of the way.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }
