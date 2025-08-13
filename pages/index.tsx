@@ -1,80 +1,57 @@
-import React from "react";
-import Link from "next/link";
+import Head from "next/head";
+import Header from "../components/Header";
+import HeroCarousel from "../components/HeroCarousel";
+import ProductsSection from "../components/ProductsSection";
+import LearnSection from "../components/LearnSection";
+import PartnerSection from "../components/PartnerSection";
+import TestimonialsSection from "../components/TestimonialsSection";
+import Footer from "../components/Footer";
 
-export default function CartPage() {
-  // Simulação de itens no carrinho
-  const cartItems = [
-    {
-      id: 1,
-      name: "Creatina Improve",
-      price: 29.99,
-      quantity: 2,
-      image: "/media/products/creatina.jpg",
-    },
-    {
-      id: 2,
-      name: "Complexo B Improve",
-      price: 19.99,
-      quantity: 1,
-      image: "/media/products/complexo-b.jpg",
-    },
-  ];
-
-  const total = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
-
+export default function Home() {
   return (
-    <div className="min-h-screen bg-areia px-4 py-8">
-      <h1 className="text-2xl font-bold text-azul mb-6">Seu Carrinho</h1>
+    <>
+      <Head>
+        <title>Improve Center – Wellness. Fitness. Healthness.</title>
+        <meta
+          name="description"
+          content="Unlock your next level. Science and nature on your side."
+        />
+        <link rel="icon" href="/favicon.svg" />
+      </Head>
 
-      {cartItems.length === 0 ? (
-        <p className="text-gray-500">Seu carrinho está vazio.</p>
-      ) : (
-        <div className="space-y-4">
-          {cartItems.map((item) => (
-            <div
-              key={item.id}
-              className="flex items-center bg-white/70 backdrop-blur rounded-md shadow-sm p-4"
-            >
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-20 h-20 object-cover rounded-md"
-              />
-              <div className="ml-4 flex-1">
-                <h2 className="text-lg font-semibold">{item.name}</h2>
-                <p className="text-gray-600">
-                  {item.quantity} × ${item.price.toFixed(2)}
-                </p>
-              </div>
-              <p className="font-bold text-azul">
-                ${(item.price * item.quantity).toFixed(2)}
-              </p>
-            </div>
-          ))}
+      {/* Cabeçalho fixo com rolagem */}
+      <Header />
 
-          <div className="flex justify-between items-center border-t pt-4 mt-4">
-            <span className="text-lg font-semibold">Total</span>
-            <span className="text-xl font-bold text-azul">
-              ${total.toFixed(2)}
-            </span>
-          </div>
+      {/* Conteúdo principal */}
+      <main className="bg-areia text-gray-900 scroll-smooth">
+        {/* Sessão 1 – Hero + News */}
+        <section id="home" className="min-h-screen flex flex-col justify-center">
+          <HeroCarousel />
+        </section>
 
-          <div className="flex justify-end gap-4 mt-6">
-            <Link
-              href="/products"
-              className="px-6 py-3 bg-gray-300 rounded-md hover:bg-gray-400 transition"
-            >
-              Continuar comprando
-            </Link>
-            <button className="px-6 py-3 bg-azul text-white rounded-md hover:bg-azul/90 transition">
-              Finalizar compra
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
+        {/* Sessão 2 – Produtos */}
+        <section id="products">
+          <ProductsSection />
+        </section>
+
+        {/* Sessão 3 – Learn + Assinaturas */}
+        <section id="learn">
+          <LearnSection />
+        </section>
+
+        {/* Sessão 4 – Parcerias */}
+        <section id="partner">
+          <PartnerSection />
+        </section>
+
+        {/* Sessão 5 – Opiniões */}
+        <section id="testimonials">
+          <TestimonialsSection />
+        </section>
+      </main>
+
+      {/* Footer */}
+      <Footer />
+    </>
   );
 }
