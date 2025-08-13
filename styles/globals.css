@@ -2,19 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --bg: #FFFEF2;
-  --text: #25515E;
+/* Ajustes globais */
+html {
+  scroll-behavior: smooth;
 }
 
-html, body, #__next { height: 100%; }
-body { @apply bg-cream text-ocean antialiased; }
-
-.container {
-  @apply max-w-6xl mx-auto px-4;
+body {
+  @apply bg-[#FFF7EA] text-slate-900 antialiased; /* “Areia” suave */
 }
 
-/* Simple card */
-.card { @apply bg-white rounded-2xl shadow-soft p-6 border border-breeze/40; }
-.btn-primary { @apply inline-flex items-center justify-center rounded-xl px-5 py-3 bg-leaf text-white font-medium hover:bg-horizon transition; }
-.badge { @apply rounded-full bg-breeze px-3 py-1 text-ocean text-xs font-medium; }
+/* Cada seção âncora compensa o header sticky (aprox 96px) */
+.anchor-section {
+  scroll-margin-top: 96px;
+}
+
+/* Linha divisória sutil entre blocos */
+.section-hairline {
+  @apply border-t border-slate-200/70;
+}
+
+/* Header com leve blur quando tiver suporte */
+.blur-bg {
+  -webkit-backdrop-filter: saturate(140%) blur(12px);
+  backdrop-filter: saturate(140%) blur(12px);
+}
+
+/* Sublinha animada nos links ativos */
+.nav-link {
+  @apply relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  height: 2px;
+  width: 100%;
+  background: #0E5162; /* Azul profundo da marca (ajuste se quiser) */
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 220ms ease;
+  border-radius: 999px;
+}
+.nav-link.is-active::after {
+  transform: scaleX(1);
+}
+
+/* Bordas e sombras bem sutis (ASMR vibe) */
+.card-soft {
+  @apply rounded-[10px] shadow-[0_2px_12px_rgba(10,37,64,0.06)] bg-white/80;
+}
