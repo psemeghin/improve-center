@@ -1,12 +1,12 @@
+// components/Layout.tsx
 import Head from "next/head";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { ReactNode } from "react";
 
 type Props = {
   title?: string;
   description?: string;
-  children: ReactNode;
+  children: React.ReactNode;
 };
 
 export default function Layout({
@@ -22,15 +22,14 @@ export default function Layout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      {/* Cabeçalho global */}
+      {/* Cabeçalho fixo/transparente (implementado no Header) */}
       <Header />
 
-      {/* Fundo Areia + leve blur/transparência como base */}
-      <main className="min-h-screen bg-[#FFF6E3] bg-opacity-95">
+      {/* Fundo areia com leve blur/transparência, sombra sutil */}
+      <main className="min-h-screen bg-[#FFF6E3]">
         {children}
       </main>
 
-      {/* Rodapé global */}
       <Footer />
     </>
   );
