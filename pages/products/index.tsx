@@ -1,213 +1,108 @@
-import Head from "next/head";
-import Image from "next/image";
+import Layout from "@/components/Layout";
 import Link from "next/link";
-
-// Tenta suportar ambos formatos de data:
-// - export const essentials = [...]; export const improving = [...];
-// - export const products = [{ category: 'essentials' | 'improving', ... }]
-// - export default { essentials, improving }
-import * as productsData from "@/data/products";
+import { products as RAW } from "@/data/products"; // seu arquivo existente
 
 type AnyProduct = {
   id?: string | number;
   slug?: string;
-  title: string;
+  title?: string;
   name?: string;
-  price?: number | string;
+  price?: number | string | null;
   image?: string;
-  cover?: string;
   img?: string;
-  category?: "essentials" | "improving" | string;
-  soon?: boolean; // “coming soon”
-  description?: string;
+  category?: string; // "Essentials" | "Improving"
+  c?: string;
+  summary?: string;
 };
 
-// Utilitários para “normalizar” o data e não quebrar o build
-function normalizeItem(p: any): AnyProduct {
+const asMoney = (p: number | string | null | undefined) => {
+  const n = typeof p === "string" ? Number(p) : p ?? 0;
+  try {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 2,
+    }).format(n);
+  } catch {
+    return `$ ${n}`;
+  }
+};
+
+const FALLBACK_IMG = "/media/products/default-v1.jpg";
+
+function Card({ p }: { p: AnyProduct }) {
   const title = p.title ?? p.name ?? "Produto";
-  const price = typeof p.price === "number" ? p.price : Number(p.price ?? 0);
-  const img =
-    p.image ??
-    p.cover ??
-    p.img ??
-    (p.slug ? `/media/products/${p.slug}.jpg` : undefined);
-
-  return {
-    id: p.id ?? p.slug ?? title,
-    slug: p.slug,
-    title,
-    price: isNaN(price) ? undefined : price,
-    image: img,
-    category: p.category,
-    soon: Boolean(p.soon),
-    description: p.description,
-  };
-}
-
-function pickArraysFromData() {
-  const anyData: any = productsData?.default ?? productsData;
-
-  let essentials: AnyProduct[] = [];
-  let improving: AnyProduct[] = [];
-
-  if (Array.isArray(anyData?.essentials)) {
-    essentials = anyData.essentials.map(normalizeItem);
-  }
-  if (Array.isArray(anyData?.improving)) {
-    improving = anyData.improving.map(normalizeItem);
-  }
-
-  // Caso tenha vindo um array único “products”
-  const all: AnyProduct[] = Array.isArray(anyData?.products)
-    ? anyData.products.map(normalizeItem)
-    : [];
-
-  if (!essentials.length && all.length) {
-    essentials = all.filter((p) => (p.category ?? "").toLowerCase() === "essentials");
-  }
-  if (!improving.length && all.length) {
-    improving = all.filter((p) => (p.category ?? "").toLowerCase() === "improving");
-  }
-
-  return { essentials, improving };
-}
-
-const { essentials, improving } = pickArraysFromData();
-
-function ProductCard({ p }: { p: AnyProduct }) {
-  const srcCandidates = [
-    p.image,
-    p.slug ? `/media/products/${p.slug}.png` : undefined,
-    p.slug ? `/media/products/${p.slug}.webp` : undefined,
-  ].filter(Boolean) as string[];
-
-  const src = srcCandidates[0];
+  const img = p.image ?? p.img ?? FALLBACK_IMG;
+  const href = p.slug ? `/products/${p.slug}` : "#";
+  const price = asMoney(p.price);
 
   return (
-    <div className="group rounded-xl border border-zinc-200/60 bg-white shadow-sm hover:shadow transition overflow-hidden">
-      <div className="relative aspect-[4/3] w-full bg-zinc-100">
-        {src ? (
-          <Image
-            src={src}
-            alt={p.title}
-            fill
-            className="object-cover"
-            sizes="(max-width:768px) 100vw, 33vw"
-            onError={(e) => {
-              (e.target as HTMLImageElement).style.display = "none";
-              const fb = (e.currentTarget.parentElement as HTMLElement).querySelector(
-                ".fb"
-              ) as HTMLElement | null;
-              if (fb) fb.style.display = "flex";
-            }}
-          />
-        ) : null}
-        {/* fallback */}
-        <div className="fb hidden absolute inset-0 items-center justify-center text-zinc-400">
-          <span className="text-sm">Imagem em breve</span>
-        </div>
-
-        {p.soon && (
-          <span className="absolute left-2 top-2 rounded-md bg-amber-500/90 px-2 py-1 text-[11px] font-medium text-white shadow">
-            coming&nbsp;soon
-          </span>
-        )}
+    <Link
+      href={href}
+      className="rounded-xl border border-slate-200 bg-white/70 shadow-sm hover:shadow-md transition overflow-hidden"
+    >
+      <div className="aspect-[4/3] bg-slate-100">
+        <img src={img} alt={title} className="w-full h-full object-cover" />
       </div>
-
-      <div className="p-4">
-        <h3 className="text-sm font-medium text-zinc-900 line-clamp-2">{p.title}</h3>
-
-        <div className="mt-2 flex items-center justify-between">
-          <span className="text-[13px] text-zinc-700">
-            {typeof p.price === "number" && p.price > 0
-              ? `$ ${p.price.toFixed(2)}`
-              : "—"}
-          </span>
-
-          <Link
-            href="#"
-            className="text-[13px] rounded-md border border-zinc-300 px-3 py-1.5 text-zinc-800 hover:bg-zinc-50"
-            aria-label={`Ver produto ${p.title}`}
-          >
-            Ver produto
-          </Link>
-        </div>
+      <div className="p-4 space-y-1">
+        <h3 className="text-base font-semibold leading-snug">{title}</h3>
+        <p className="text-sm text-slate-600">{price}</p>
+        <span className="mt-2 inline-flex text-xs rounded px-2 py-1 bg-emerald-50 text-emerald-700">
+          Ver produto
+        </span>
       </div>
-    </div>
+    </Link>
   );
 }
 
 export default function ProductsPage() {
-  return (
-    <>
-      <Head>
-        <title>Marketplace — Improve</title>
-        <meta
-          name="description"
-          content="Catálogo de produtos Improve — Essentials e Improving."
-        />
-      </Head>
+  const items: AnyProduct[] = (RAW as unknown as AnyProduct[]) ?? [];
+  const essentials = items.filter(
+    (p) => (p.category ?? p.c ?? "").toLowerCase() === "essentials"
+  );
+  const improving = items.filter(
+    (p) => (p.category ?? p.c ?? "").toLowerCase() === "improving"
+  );
 
-      <main className="mx-auto max-w-6xl px-4 py-8 sm:py-10 md:py-12">
-        <header className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-semibold text-improve">
-            Marketplace
-          </h1>
-          <p className="mt-2 text-sm text-zinc-700">
-            Escolha sua linha. Preço visível, preview e CTA direto.
-          </p>
+  return (
+    <Layout title="Produtos — Improve" description="Catálogo Improve: Essentials & Improving.">
+      <div className="mx-auto max-w-6xl px-4 py-10 space-y-12">
+        <header className="space-y-2">
+          <h1 className="text-3xl font-bold">Marketplace</h1>
+          <p className="text-slate-600">Catálogo com categorias Essentials e Improving.</p>
         </header>
 
-        {/* Essentials */}
-        <section id="essentials" className="scroll-mt-24">
-          <div className="mb-3 flex items-end justify-between">
-            <h2 className="text-lg sm:text-xl font-semibold text-zinc-900">
-              Essentials
-            </h2>
-            <Link
-              href="#improving"
-              className="text-sm text-improve hover:underline"
-            >
-              Ir para Improving
+        <section id="essentials" className="space-y-4">
+          <div className="flex items-baseline justify-between">
+            <h2 className="text-xl font-semibold">Essentials</h2>
+            <Link href="/#products-preview" className="text-emerald-700 hover:underline">
+              Voltar à Home
             </Link>
           </div>
-
-          {essentials?.length ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5">
-              {essentials.map((p) => (
-                <ProductCard key={`${p.id}`} p={p} />
+          {essentials.length ? (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {essentials.map((p, i) => (
+                <Card key={`${p.slug ?? p.title ?? "e"}-${i}`} p={p} />
               ))}
             </div>
           ) : (
-            <p className="text-sm text-zinc-600">Sem itens no momento.</p>
+            <p className="text-slate-500">Em breve.</p>
           )}
         </section>
 
-        {/* Divider suave */}
-        <div className="my-10 h-px bg-zinc-200/70" />
-
-        {/* Improving */}
-        <section id="improving" className="scroll-mt-24">
-          <div className="mb-3 flex items-end justify-between">
-            <h2 className="text-lg sm:text-xl font-semibold text-zinc-900">
-              Improving
-            </h2>
-            <Link href="#essentials" className="text-sm text-improve hover:underline">
-              Voltar para Essentials
-            </Link>
-          </div>
-
-          {improving?.length ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5">
-              {improving.map((p) => (
-                <ProductCard key={`${p.id}`} p={p} />
+        <section id="improving" className="space-y-4">
+          <h2 className="text-xl font-semibold">Improving</h2>
+          {improving.length ? (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {improving.map((p, i) => (
+                <Card key={`${p.slug ?? p.title ?? "i"}-${i}`} p={p} />
               ))}
             </div>
           ) : (
-            <p className="text-sm text-zinc-600">Sem itens no momento.</p>
+            <p className="text-slate-500">Em breve.</p>
           )}
         </section>
-      </main>
-    </>
+      </div>
+    </Layout>
   );
 }
