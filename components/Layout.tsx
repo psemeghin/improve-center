@@ -1,20 +1,23 @@
 // components/Layout.tsx
 import Head from "next/head";
-import Header from "./Header";
-import Footer from "./Footer";
 import React from "react";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
-type Props = {
+type LayoutProps = {
+  /** Título da página (aparece na aba do navegador) */
   title?: string;
+  /** Meta description */
   description?: string;
+  /** Conteúdo da página */
   children: React.ReactNode;
 };
 
 export default function Layout({
   title = "Improve — Wellness. Fitness. Healthness.",
-  description = "Produtos e conteúdos para performance, saúde e bem-estar.",
+  description = "Transformando vidas pelo equilíbrio: performance, saúde e bem‑estar com ciência e natureza ao seu lado.",
   children,
-}: Props) {
+}: LayoutProps) {
   return (
     <>
       <Head>
@@ -23,11 +26,11 @@ export default function Layout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      {/* Header fixo (fundo areia com leve blur) */}
+      {/* Cabeçalho fixo/transparente (o comportamento está no componente Header) */}
       <Header />
 
-      {/* Conteúdo principal com espaçamento para o header fixo */}
-      <main className="min-h-screen pt-20 bg-[#FFF6E3]">
+      {/* Fundo Areia + leve blur/transparência (seguindo seu padrão) */}
+      <main className="min-h-screen bg-[#FAF1DF]/95 backdrop-blur-sm">
         {children}
       </main>
 
