@@ -1,73 +1,105 @@
 "use client";
-import { useState, useEffect } from "react";
+
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
-const slides = [
+type Slide = {
+  src: string;
+  title: string;
+  subtitle: string;
+  cta?: { label: string; href: string };
+};
+
+const SLIDES: Slide[] = [
   {
-    id: 1,
-    image: "/media/banner1.jpg",
-    title: "Unlock your next level",
-    subtitle: "Science and nature on your side",
-    cta: "Saiba mais",
-    link: "#products",
+    src: "/media/banners/hero-1.jpg", // coloque seus arquivos aqui
+    title: "Wellness. Fitness. Healthness.",
+    subtitle: "Science and nature on your side.",
+    cta: { label: "Unlock your next level", href: "/products" },
   },
   {
-    id: 2,
-    image: "/media/banner2.jpg",
-    title: "Energy for your best day",
-    subtitle: "Let nature be your medicine",
-    cta: "Ver produtos",
-    link: "#products",
+    src: "/media/banners/hero-2.jpg",
+    title: "Energy for your best day.",
+    subtitle: "Curadoria com evidência científica.",
+    cta: { label: "Ver produtos", href: "/products" },
   },
   {
-    id: 3,
-    image: "/media/banner3.jpg",
-    title: "Awaken your full potential",
-    subtitle: "Care that transforms",
-    cta: "Assinar agora",
-    link: "#learn",
+    src: "/media/banners/hero-3.jpg",
+    title: "Awaken your full potential.",
+    subtitle: "Conteúdo, cursos e e‑books.",
+    cta: { label: "Explorar conteúdo", href: "/conteudo" },
   },
 ];
 
 export default function HeroCarousel() {
-  const [current, setCurrent] = useState(0);
+  const [idx, setIdx] = useState(0);
+  const timer = useRef<NodeJS.Timeout | null>(null);
+  const [paused, setPaused] = useState(false);
 
+  // autoplay suave
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % slides.length);
+    if (paused) return;
+    timer.current = setTimeout(() => {
+      setIdx((p) => (p + 1) % SLIDES.length);
     }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+    return () => {
+      if (timer.current) clearTimeout(timer.current);
+    };
+  }, [idx, paused]);
 
   return (
-    <section id="home" className="py-12 md:py-20 max-w-7xl mx-auto px-4 md:px-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        {/* Imagem principal */}
-        <div className="relative w-full h-[300px] md:h-[400px] overflow-hidden rounded-lg shadow-md">
-          <Image
-            src={slides[current].image}
-            alt={slides[current].title}
-            fill
-            className="object-cover transition-all duration-700"
-            priority
-          />
-        </div>
+    <div
+      className="relative rounded-md overflow-hidden bg-slate-200/60"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      aria-roledescription="carousel"
+    >
+      {/* Slide ativo */}
+      <div className="relative aspect-[16/9] w-full">
+        <Image
+          key={SLIDES[idx].src}
+          src={SLIDES[idx].src}
+          alt={SLIDES[idx].title}
+          fill
+          priority
+          className="object-cover transition-opacity duration-500"
+        />
+      </div>
 
-        {/* Texto e CTA */}
-        <div className="flex flex-col justify-center space-y-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-azul">
-            {slides[current].title}
-          </h2>
-          <p className="text-lg text-gray-700">{slides[current].subtitle}</p>
-          <Link
-            href={slides[current].link}
-            className="inline-block bg-azul text-white px-5 py-2 rounded-md shadow hover:bg-azul/90 transition"
-          >
-            {slides[current].cta}
-          </Link>
+      {/* Texto sobreposto (margem esquerda; “ultrapassa” levemente o centro) */}
+      <div className="absolute inset-0 flex items-end">
+        <div className="w-full md:w-[58%] lg:w-[55%] px-6 pb-6">
+          <div className="rounded-md bg-white/75 backdrop-blur p-5 shadow-sm">
+            <h2 className="text-2xl md:text-3xl font-bold text-[#0A2540]">
+              {SLIDES[idx].title}
+            </h2>
+            <p className="mt-1 text-slate-700">{SLIDES[idx].subtitle}</p>
+            {SLIDES[idx].cta && (
+              <Link
+                href={SLIDES[idx].cta.href}
+                className="mt-3 inline-block rounded-md bg-[#0E5162] px-4 py-2 text-white text-sm hover:opacity-90"
+              >
+                {SLIDES[idx].cta.label}
+              </Link>
+            )}
+          </div>
         </div>
       </div>
-    </section>
+
+      {/* Controles (pontos) */}
+      <div className="absolute bottom-3 right-4 flex gap-2">
+        {SLIDES.map((_, i) => (
+          <button
+            key={i}
+            aria-label={`Ir para slide ${i + 1}`}
+            onClick={() => setIdx(i)}
+            className={`h-2 w-2 rounded-full transition ${
+              i === idx ? "bg-[#0E5162]" : "bg-white/80"
+            }`}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
