@@ -1,67 +1,50 @@
-// components/Header.tsx
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import React from "react";
-
-const nav = [
-  { href: "/", label: "Home" },
-  { href: "/products", label: "Produtos" },     // pasta atual é /products
-  { href: "/conteudo", label: "Conteúdo" },     // página /conteudo
-  { href: "/parcerias", label: "Parceria" },    // página /parcerias
-  { href: "/opinioes", label: "Opiniões" },     // se a sua página for /opinioes
-  { href: "/cart", label: "Carrinho" },
-];
 
 export default function Header() {
-  const { pathname } = useRouter();
-
   return (
-    <header className="fixed inset-x-0 top-0 z-50 backdrop-blur-sm bg-[rgba(255,246,227,0.7)] border-b border-black/5">
-      <div className="mx-auto max-w-6xl px-4 h-16 flex items-center justify-between">
-        {/* Logo: sol + nome (o nome some ao rolar via CSS utilitário opcional) */}
+    <header className="sticky top-0 z-40 backdrop-blur bg-[#FFF6E3]/90 border-b border-black/5">
+      <div className="mx-auto max-w-6xl px-4 h-14 flex items-center justify-between">
+        {/* Marca: sol + logotipo (sol sempre visível; nome some com scroll via CSS se desejar) */}
         <Link href="/" className="flex items-center gap-2">
+          {/* Ajuste os caminhos das logos conforme seu /public/media/logos/... */}
           <Image
-            src="/media/logos/Simbolo-Preto.svg"
+            src="/media/logos/simbolo-azul.svg"
             alt="Improve"
-            width={24}
-            height={24}
+            width={20}
+            height={20}
             priority
           />
           <Image
-            src="/media/logos/Logohorizontal-AzulOceanoProfundo.svg"
+            src="/media/logos/logo-horizontal-azul.svg"
             alt="Improve"
             width={92}
             height={18}
             className="hidden sm:block"
+            priority
           />
         </Link>
 
-        <nav className="hidden md:flex items-center gap-4">
-          {nav.map((item) => {
-            const active = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`text-sm font-medium transition-colors border-b-2 ${
-                  active
-                    ? "text-emerald-700 border-emerald-700"
-                    : "text-slate-700 border-transparent hover:text-emerald-700"
-                }`}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
+        {/* Navegação */}
+        <nav className="flex items-center gap-4 text-sm">
+          <Link href="/" className="hover:underline">Home</Link>
+          <Link href="/products" className="hover:underline">Produtos</Link>
+          <Link href="/conteudo" className="hover:underline">Conteúdo</Link>
+          <Link href="/parcerias" className="hover:underline">Parceria</Link>
+          <Link href="/#opinions" className="hover:underline">Opiniões</Link>
+          <Link
+            href="/carrinho"
+            className="hidden md:inline-flex hover:underline"
+          >
+            Carrinho
+          </Link>
+          <Link
+            href="/login"
+            className="ml-2 rounded-md border border-emerald-200 px-3 py-1.5 text-emerald-700 hover:bg-emerald-50"
+          >
+            Login
+          </Link>
         </nav>
-
-        <Link
-          href="/login"
-          className="rounded-md bg-emerald-700 text-white px-3 py-1 text-sm hover:bg-emerald-800"
-        >
-          Login
-        </Link>
       </div>
     </header>
   );
