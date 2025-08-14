@@ -1,7 +1,7 @@
+// pages/conteudo/index.tsx
 import Link from "next/link";
-import Layout from "@/components/Layout";
-// troquei o alias pelo caminho relativo para evitar erro no build
-import { contentItems } from "../../data/content";
+import Layout from "../../components/Layout";          // <- relativo
+import { contentItems } from "../../data/content";     // <- relativo
 
 type AnyItem = {
   id: string;
