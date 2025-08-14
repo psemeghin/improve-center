@@ -1,12 +1,8 @@
+// pages/index.tsx
 import Head from "next/head";
 import Link from "next/link";
 
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-
-import HeroCarousel from "@/components/HeroCarousel";
-import NewsList from "@/components/NewsList";
-
+import HeroSection from "@/components/HeroSection";
 import ProductSection from "@/components/ProductSection";
 import LearnSection from "@/components/LearnSection";
 import PartnerSection from "@/components/PartnerSection";
@@ -23,22 +19,14 @@ export default function Home() {
         />
       </Head>
 
-      <Header />
-
-      <main className="min-h-screen bg-[#FAF1DF]">
-        {/* Sessão 1 — Hero + News (lado a lado) */}
-        <section id="home" className="container mx-auto px-4 pt-6 md:pt-10">
-          <div className="grid gap-6 md:grid-cols-3">
-            <div className="md:col-span-2">
-              <HeroCarousel />
-            </div>
-            <div className="md:col-span-1">
-              <NewsList />
-            </div>
-          </div>
+      {/* Fundo areia já vem do Layout via <main>, mas mantemos classe caso você prefira local */}
+      <div className="min-h-screen bg-[#FFF6E3]">
+        {/* Sessão 1 — Hero (imagem + 'news' ao lado) */}
+        <section id="home" className="pt-6 md:pt-8">
+          <HeroSection />
 
           {/* Headline/claim principal abaixo do hero */}
-          <div className="mt-8 rounded-xl border border-black/5 bg-white/60 p-6 shadow-sm backdrop-blur">
+          <div className="mx-auto max-w-6xl px-4 mt-6 rounded-xl border border-black/5 bg-white/60 p-6 shadow-sm backdrop-blur">
             <h1 className="text-3xl font-extrabold tracking-tight text-slate-800">
               Wellness. Fitness. Healthness.
             </h1>
@@ -60,15 +48,9 @@ export default function Home() {
         </section>
 
         {/* Sessão 2 — Produtos (prévia) */}
-        <section
-          id="products-preview"
-          className="container mx-auto px-4 pt-12 md:pt-16"
-        >
+        <section id="products-preview" className="mx-auto max-w-6xl px-4 pt-12 md:pt-16">
           <div className="mb-4 flex items-end justify-between">
-            <Link
-              href="/products"
-              className="group inline-flex items-center gap-2"
-            >
+            <Link href="/products" className="group inline-flex items-center gap-2">
               <h2 className="text-xl font-semibold text-slate-800">
                 Marketplace • Produtos
               </h2>
@@ -87,15 +69,9 @@ export default function Home() {
         </section>
 
         {/* Sessão 3 — Conteúdo (prévia) */}
-        <section
-          id="content-preview"
-          className="container mx-auto px-4 pt-12 md:pt-16"
-        >
+        <section id="content-preview" className="mx-auto max-w-6xl px-4 pt-12 md:pt-16">
           <div className="mb-4 flex items-end justify-between">
-            <Link
-              href="/content"
-              className="group inline-flex items-center gap-2"
-            >
+            <Link href="/conteudo" className="group inline-flex items-center gap-2">
               <h2 className="text-xl font-semibold text-slate-800">
                 Conteúdo • Learn
               </h2>
@@ -103,7 +79,7 @@ export default function Home() {
             </Link>
 
             <Link
-              href="/content"
+              href="/conteudo"
               className="text-sm font-medium text-emerald-700 hover:underline"
             >
               Acessar conteúdos →
@@ -114,15 +90,9 @@ export default function Home() {
         </section>
 
         {/* Sessão 4 — Parcerias (prévia) */}
-        <section
-          id="partner-preview"
-          className="container mx-auto px-4 pt-12 md:pt-16"
-        >
+        <section id="partner-preview" className="mx-auto max-w-6xl px-4 pt-12 md:pt-16">
           <div className="mb-4 flex items-end justify-between">
-            <Link
-              href="/partner"
-              className="group inline-flex items-center gap-2"
-            >
+            <Link href="/parcerias" className="group inline-flex items-center gap-2">
               <h2 className="text-xl font-semibold text-slate-800">
                 Parcerias • Vendors &amp; Producers
               </h2>
@@ -130,7 +100,7 @@ export default function Home() {
             </Link>
 
             <Link
-              href="/partner"
+              href="/parcerias"
               className="text-sm font-medium text-emerald-700 hover:underline"
             >
               Enviar proposta →
@@ -141,19 +111,14 @@ export default function Home() {
         </section>
 
         {/* Sessão 5 — Opiniões/Depoimentos */}
-        <section
-          id="opinions"
-          className="container mx-auto px-4 pt-12 pb-16 md:pt-16"
-        >
+        <section id="opinions" className="mx-auto max-w-6xl px-4 pt-12 pb-16 md:pt-16">
           <div className="mb-4">
             <h2 className="text-xl font-semibold text-slate-800">Opiniões</h2>
           </div>
 
           <TestimonialSection />
         </section>
-      </main>
-
-      <Footer />
+      </div>
     </>
   );
 }
