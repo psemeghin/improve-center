@@ -1,105 +1,119 @@
+// pages/products/index.tsx
 import Layout from "@/components/Layout";
+import { products } from "@/data/products";
 import Link from "next/link";
-import { products as RAW } from "@/data/products"; // seu arquivo existente
 
-type AnyProduct = {
-  id?: string | number;
-  slug?: string;
-  title?: string;
-  name?: string;
-  price?: number | string | null;
+type Product = {
+  id: string;
+  title: string;
+  price: number;
+  category: "Essentials" | "Improving" | string;
   image?: string;
-  img?: string;
-  category?: string; // "Essentials" | "Improving"
-  c?: string;
+  comingSoon?: boolean;
   summary?: string;
-};
-
-const asMoney = (p: number | string | null | undefined) => {
-  const n = typeof p === "string" ? Number(p) : p ?? 0;
-  try {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      maximumFractionDigits: 2,
-    }).format(n);
-  } catch {
-    return `$ ${n}`;
-  }
 };
 
 const FALLBACK_IMG = "/media/products/default-v1.jpg";
 
-function Card({ p }: { p: AnyProduct }) {
-  const title = p.title ?? p.name ?? "Produto";
-  const img = p.image ?? p.img ?? FALLBACK_IMG;
-  const href = p.slug ? `/products/${p.slug}` : "#";
-  const price = asMoney(p.price);
+function ProductCard({ p }: { p: Product }) {
+  const img = p.image || FALLBACK_IMG;
 
   return (
-    <Link
-      href={href}
-      className="rounded-xl border border-slate-200 bg-white/70 shadow-sm hover:shadow-md transition overflow-hidden"
-    >
+    <div className="rounded-xl border border-slate-200 bg-white/70 shadow-sm hover:shadow-md transition overflow-hidden">
       <div className="aspect-[4/3] bg-slate-100">
-        <img src={img} alt={title} className="w-full h-full object-cover" />
+        <img src={img} alt={p.title} className="w-full h-full object-cover" />
       </div>
-      <div className="p-4 space-y-1">
-        <h3 className="text-base font-semibold leading-snug">{title}</h3>
-        <p className="text-sm text-slate-600">{price}</p>
-        <span className="mt-2 inline-flex text-xs rounded px-2 py-1 bg-emerald-50 text-emerald-700">
-          Ver produto
-        </span>
+
+      <div className="p-4 space-y-2">
+        <div className="flex items-center justify-between">
+          <span className="text-xs uppercase tracking-wide text-slate-500">
+            {p.category}
+          </span>
+
+          {p.comingSoon ? (
+            <span className="text-[10px] px-2 py-1 rounded bg-amber-100 text-amber-800">
+              coming soon
+            </span>
+          ) : null}
+        </div>
+
+        <h3 className="text-base font-semibold leading-snug">{p.title}</h3>
+
+        {p.summary ? (
+          <p className="text-sm text-slate-600 line-clamp-2">{p.summary}</p>
+        ) : null}
+
+        <div className="flex items-center justify-between pt-2">
+          <span className="text-sm font-semibold text-slate-800">
+            {typeof p.price === "number" ? `$ ${p.price.toFixed(2)}` : "—"}
+          </span>
+
+          <Link
+            href="#"
+            className="text-sm text-emerald-700 hover:text-emerald-800 underline"
+          >
+            Ver produto
+          </Link>
+        </div>
       </div>
-    </Link>
+    </div>
   );
 }
 
 export default function ProductsPage() {
-  const items: AnyProduct[] = (RAW as unknown as AnyProduct[]) ?? [];
-  const essentials = items.filter(
-    (p) => (p.category ?? p.c ?? "").toLowerCase() === "essentials"
+  const essentials = (products as Product[]).filter(
+    (p) => p.category?.toLowerCase() === "essentials"
   );
-  const improving = items.filter(
-    (p) => (p.category ?? p.c ?? "").toLowerCase() === "improving"
+  const improving = (products as Product[]).filter(
+    (p) => p.category?.toLowerCase() === "improving"
   );
 
   return (
-    <Layout title="Produtos — Improve" description="Catálogo Improve: Essentials & Improving.">
+    <Layout
+      title="Produtos — Improve"
+      description="Catálogo Improve com as linhas Essentials e Improving."
+    >
       <div className="mx-auto max-w-6xl px-4 py-10 space-y-12">
         <header className="space-y-2">
           <h1 className="text-3xl font-bold">Marketplace</h1>
-          <p className="text-slate-600">Catálogo com categorias Essentials e Improving.</p>
+          <p className="text-slate-600">
+            Catálogo com as categorias <strong>Essentials</strong> e{" "}
+            <strong>Improving</strong>.
+          </p>
         </header>
 
+        {/* Essentials */}
         <section id="essentials" className="space-y-4">
-          <div className="flex items-baseline justify-between">
+          <div className="flex items-end justify-between">
             <h2 className="text-xl font-semibold">Essentials</h2>
             <Link href="/#products-preview" className="text-emerald-700 hover:underline">
               Voltar à Home
             </Link>
           </div>
+
           {essentials.length ? (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {essentials.map((p, i) => (
-                <Card key={`${p.slug ?? p.title ?? "e"}-${i}`} p={p} />
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {essentials.map((p) => (
+                <ProductCard key={p.id} p={p} />
               ))}
             </div>
           ) : (
-            <p className="text-slate-500">Em breve.</p>
+            <p className="text-slate-500">Sem produtos nessa categoria.</p>
           )}
         </section>
 
+        {/* Improving */}
         <section id="improving" className="space-y-4">
           <h2 className="text-xl font-semibold">Improving</h2>
+
           {improving.length ? (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {improving.map((p, i) => (
-                <Card key={`${p.slug ?? p.title ?? "i"}-${i}`} p={p} />
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {improving.map((p) => (
+                <ProductCard key={p.id} p={p} />
               ))}
             </div>
           ) : (
-            <p className="text-slate-500">Em breve.</p>
+            <p className="text-slate-500">Sem produtos nessa categoria.</p>
           )}
         </section>
       </div>
