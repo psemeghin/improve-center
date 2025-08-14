@@ -1,71 +1,133 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import HeroCarousel from '@/components/HeroCarousel'
-import NewsList from '@/components/NewsList'
-import ProductSection from '@/components/ProductSection'
-import LearnSection from '@/components/LearnSection'
-import PartnerSection from '@/components/PartnerSection'
-import TestimonialSection from '@/components/TestimonialSection'
 
-export default function Home() {
+// Importa seus itens de conteúdo do /data/content.ts
+// (o arquivo que você já tem, com newsletters/cursos/ebooks)
+import { contentItems } from '@/data/content'
+
+// Tipagem defensiva para evitar erro caso o arquivo não exporte types
+type AnyItem = {
+  id: string
+  title: string
+  kind: 'newsletter' | 'course' | 'ebook' | string
+  excerpt?: string
+  image?: string
+  url?: string
+}
+
+const FALLBACK_IMG = '/media/content/default-v1.jpg'
+
+function Card({ item }: { item: AnyItem }) {
+  const img = item.image || FALLBACK_IMG
+  const isExternal = item.url?.startsWith('http')
+  return (
+    <div className="rounded-xl border border-slate-200 bg-white/70 shadow-sm hover:shadow-md transition overflow-hidden">
+      <div className="aspect-[16/9] bg-slate-100">
+        {/* pode trocar por next/image depois se quiser */}
+        <img src={img} alt={item.title} className="w-full h-full object-cover" />
+      </div>
+      <div className="p-4 space-y-2">
+        <span className="inline-flex px-2 py-1 text-xs rounded bg-emerald-50 text-emerald-700">
+          {item.kind}
+        </span>
+        <h3 className="text-base font-semibold leading-snug">{item.title}</h3>
+        {item.excerpt && (
+          <p className="text-sm text-slate-600 line-clamp-3">{item.excerpt}</p>
+        )}
+        <div className="pt-2">
+          {item.url ? (
+            isExternal ? (
+              <a
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-emerald-700 hover:text-emerald-800 underline"
+              >
+                Acessar
+              </a>
+            ) : (
+              <Link href={item.url} className="text-emerald-700 hover:text-emerald-800 underline">
+                Acessar
+              </Link>
+            )
+          ) : null}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default function ContentPage() {
+  // normaliza os dados vindos do /data/content.ts
+  const items = (contentItems as unknown as AnyItem[]) || []
+
+  const newsletters = items.filter((i) => i.kind?.toLowerCase() === 'newsletter')
+  const courses     = items.filter((i) => i.kind?.toLowerCase() === 'course')
+  const ebooks      = items.filter((i) => i.kind?.toLowerCase() === 'ebook')
+
   return (
     <>
       <Head>
-        <title>Improve — Wellness. Fitness. Healthness.</title>
+        <title>Conteúdo — Improve</title>
         <meta
           name="description"
-          content="Plataforma Improve — produtos, conteúdos e parcerias para alta performance e bem-estar."
+          content="Conteúdo Premium da Improve: newsletters, cursos e e-books para performance e bem-estar."
         />
       </Head>
 
-      <main className="space-y-20">
-        
-        {/* Sessão 1 — Hero + News */}
-        <section id="hero" className="container mx-auto px-4 flex flex-col md:flex-row gap-8">
-          <div className="flex-1">
-            <HeroCarousel images={["/media/banners/hero-default-v1.jpg"]} />
-          </div>
-          <div className="flex-1">
-            <NewsList />
-          </div>
-        </section>
+      <main className="container mx-auto px-4 py-10 space-y-16">
+        <header className="space-y-2">
+          <h1 className="text-3xl font-bold">Conteúdo Premium</h1>
+          <p className="text-slate-600">
+            Newsletters, cursos e e‑books selecionados para acelerar sua evolução.
+          </p>
+        </header>
 
-        {/* Sessão 2 — Produtos em destaque */}
-        <section id="products" className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">Produtos em destaque</h2>
-            <Link href="/products" className="text-emerald-600 hover:underline">
-              Ver todos
+        {/* NEWSLETTERS */}
+        <section id="newsletters" className="space-y-6">
+          <div className="flex items-baseline justify-between">
+            <h2 className="text-xl font-semibold">Newsletters</h2>
+            <Link href="/#content" className="text-emerald-700 hover:underline">
+              Voltar à Home
             </Link>
           </div>
-          <ProductSection limit={4} />
+          {newsletters.length ? (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {newsletters.map((n) => (
+                <Card key={n.id} item={n} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-slate-500">Sem items no momento.</p>
+          )}
         </section>
 
-        {/* Sessão 3 — Conteúdo/Learn */}
-        <section id="content" className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">Conteúdo & Learn</h2>
-            <Link href="/conteudo" className="text-emerald-600 hover:underline">
-              Acessar conteúdos
-            </Link>
-          </div>
-          <LearnSection limit={3} />
+        {/* CURSOS */}
+        <section id="cursos" className="space-y-6">
+          <h2 className="text-xl font-semibold">Cursos</h2>
+          {courses.length ? (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {courses.map((c) => (
+                <Card key={c.id} item={c} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-slate-500">Em breve.</p>
+          )}
         </section>
 
-        {/* Sessão 4 — Parcerias */}
-        <section id="partner" className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">Parcerias (preview)</h2>
-            <Link href="/partner" className="text-emerald-600 hover:underline">
-              Envie proposta
-            </Link>
-          </div>
-          <PartnerSection />
-        </section>
-
-        {/* Sessão 5 — Depoimentos */}
-        <section id="testimonials" className="container mx-auto px-4">
-          <TestimonialSection />
+        {/* E-BOOKS */}
+        <section id="ebooks" className="space-y-6">
+          <h2 className="text-xl font-semibold">E‑books</h2>
+          {ebooks.length ? (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {ebooks.map((e) => (
+                <Card key={e.id} item={e} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-slate-500">Em breve.</p>
+          )}
         </section>
       </main>
     </>
