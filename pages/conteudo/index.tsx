@@ -1,12 +1,12 @@
-// pages/conteudo/index.tsx
 import Link from "next/link";
 import Layout from "@/components/Layout";
-import { contentItems } from "@/data/content";
+// troquei o alias pelo caminho relativo para evitar erro no build
+import { contentItems } from "../../data/content";
 
 type AnyItem = {
   id: string;
   title: string;
-  kind: "newsletter" | "curso" | "course" | "ebook" | string;
+  kind: "newsletter" | "course" | "ebook" | string;
   excerpt?: string;
   image?: string;
   url?: string;
@@ -31,7 +31,12 @@ function Card({ item }: { item: AnyItem }) {
         <div className="pt-2">
           {item.url ? (
             isExternal ? (
-              <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-emerald-700 hover:text-emerald-800 underline">
+              <a
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-emerald-700 hover:text-emerald-800 underline"
+              >
                 Acessar
               </a>
             ) : (
@@ -48,22 +53,20 @@ function Card({ item }: { item: AnyItem }) {
 
 export default function ContentPage() {
   const items = (contentItems as unknown as AnyItem[]) || [];
-
-  // Mapeia "curso" → "course" para compatibilidade com traduções
   const newsletters = items.filter((i) => i.kind?.toLowerCase() === "newsletter");
-  const courses = items.filter((i) => i.kind?.toLowerCase() === "curso" || i.kind?.toLowerCase() === "course");
+  const courses = items.filter((i) => i.kind?.toLowerCase() === "course");
   const ebooks = items.filter((i) => i.kind?.toLowerCase() === "ebook");
 
   return (
     <Layout
       title="Conteúdo — Improve"
-      description="Conteúdo Premium da Improve: newsletters, cursos e e-books para performance e bem-estar."
+      description="Conteúdo Premium da Improve: newsletters, cursos e e‑books para performance e bem‑estar."
     >
       <main className="mx-auto max-w-6xl px-4 py-10 space-y-16">
         <header className="space-y-2">
           <h1 className="text-3xl font-bold">Conteúdo Premium</h1>
           <p className="text-slate-600">
-            Newsletters, cursos e e-books selecionados para acelerar sua evolução.
+            Newsletters, cursos e e‑books selecionados para acelerar sua evolução.
           </p>
         </header>
 
@@ -102,7 +105,7 @@ export default function ContentPage() {
 
         {/* E-BOOKS */}
         <section id="ebooks" className="space-y-6">
-          <h2 className="text-xl font-semibold">E-books</h2>
+          <h2 className="text-xl font-semibold">E‑books</h2>
           {ebooks.length ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {ebooks.map((e) => (
