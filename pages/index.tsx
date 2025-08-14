@@ -1,4 +1,3 @@
-// pages/index.tsx
 import Link from "next/link";
 import Layout from "@/components/Layout";
 
@@ -14,8 +13,7 @@ export default function Home() {
       title="Improve — Wellness. Fitness. Healthness."
       description="Transformando vidas pelo equilíbrio: performance, saúde e bem‑estar com ciência e natureza ao seu lado."
     >
-      {/* Fundo areia já vem do Layout (bg + blur). Mantemos somente conteúdo. */}
-      {/* Sessão 1 — Hero (com news ao lado dentro do componente) */}
+      {/* Sessão 1 — Hero (imagem + 'news' ao lado) */}
       <section id="home" className="pt-6 md:pt-8">
         <HeroSection />
 
@@ -51,14 +49,10 @@ export default function Home() {
             <span className="h-px w-10 bg-slate-300 transition-all group-hover:w-16" />
           </Link>
 
-          <Link
-            href="/products"
-            className="text-sm font-medium text-emerald-700 hover:underline"
-          >
+        <Link href="/products" className="text-sm font-medium text-emerald-700 hover:underline">
             Ver catálogo completo →
           </Link>
         </div>
-
         <ProductSection />
       </section>
 
@@ -72,11 +66,10 @@ export default function Home() {
             <span className="h-px w-10 bg-slate-300 transition-all group-hover:w-16" />
           </Link>
 
-        <Link href="/conteudo" className="text-sm font-medium text-emerald-700 hover:underline">
+          <Link href="/conteudo" className="text-sm font-medium text-emerald-700 hover:underline">
             Acessar conteúdos →
           </Link>
         </div>
-
         <LearnSection />
       </section>
 
@@ -90,14 +83,10 @@ export default function Home() {
             <span className="h-px w-10 bg-slate-300 transition-all group-hover:w-16" />
           </Link>
 
-          <Link
-            href="/parcerias"
-            className="text-sm font-medium text-emerald-700 hover:underline"
-          >
+          <Link href="/parcerias" className="text-sm font-medium text-emerald-700 hover:underline">
             Enviar proposta →
           </Link>
         </div>
-
         <PartnerSection />
       </section>
 
@@ -106,7 +95,6 @@ export default function Home() {
         <div className="mb-4">
           <h2 className="text-xl font-semibold text-slate-800">Opiniões</h2>
         </div>
-
         <TestimonialSection />
       </section>
     </Layout>
