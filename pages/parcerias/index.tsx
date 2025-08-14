@@ -1,307 +1,150 @@
-import React, { useState } from "react";
+import Head from "next/head";
 
-type FormState = {
-  role: "produtor" | "vendedor";
-  nome: string;
-  empresa?: string;
-  email: string;
-  site?: string;
-  pais?: string;
-  categorias?: string;
-  volume?: string;
-  mensagem?: string;
-  arquivo?: File | null;
-  agree: boolean;
-};
-
-export default function ParceriasPage() {
-  const [state, setState] = useState<FormState>({
-    role: "produtor",
-    nome: "",
-    empresa: "",
-    email: "",
-    site: "",
-    pais: "",
-    categorias: "",
-    volume: "",
-    mensagem: "",
-    arquivo: null,
-    agree: false,
-  });
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target as any;
-    if (type === "checkbox") {
-      setState((s) => ({ ...s, [name]: (e.target as HTMLInputElement).checked }));
-    } else {
-      setState((s) => ({ ...s, [name]: value }));
-    }
-  };
-
-  const onFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    setState((s) => ({ ...s, arquivo: file }));
-  };
-
-  const onSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // MVP: apenas simula envio
-    alert("Recebido! Entraremos em contato por email.");
-  };
-
+export default function PartnerPage() {
   return (
-    <main className="min-h-screen bg-areia">
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <h1 className="text-3xl font-bold text-azul mb-2">Parcerias</h1>
-        <p className="text-slate-700 max-w-prose">
-          Junte-se à Improve. Se você é produtor/fornecedor de qualidade ou vendedor com operação sólida,
-          queremos construir uma rede confiável e de alto impacto. Preencha o formulário abaixo:
-        </p>
+    <>
+      <Head>
+        <title>Parcerias — Improve</title>
+        <meta
+          name="description"
+          content="Parcerias Improve: junte-se como produtor, fornecedor ou vendedor para crescermos com qualidade e transparência."
+        />
+      </Head>
 
-        {/* Âncoras para navegação direta */}
-        <div className="mt-6 flex flex-wrap gap-3">
-          <a href="#produtores" className="rounded-full bg-azul px-3 py-1 text-white text-sm">Produtores</a>
-          <a href="#vendedores" className="rounded-full bg-azul px-3 py-1 text-white text-sm">Vendedores</a>
-        </div>
-
-        {/* PRODUTORES */}
-        <div id="produtores" className="mt-10 rounded-[4px] bg-white/95 backdrop-blur shadow-card p-6">
-          <h2 className="text-xl font-semibold text-slate-900">Sou Produtor / Fornecedor</h2>
-          <p className="text-sm text-slate-600 mt-1">
-            Qualidade, compliance e rastreabilidade. Conte-nos sobre seus produtos e diferenciais.
+      <main className="mx-auto max-w-6xl px-4 py-10 space-y-12">
+        <header className="space-y-2">
+          <h1 className="text-3xl font-bold">Parcerias</h1>
+          <p className="text-slate-600 max-w-3xl">
+            Junte-se à Improve. Se você é produtor/fornecedor de qualidade ou vendedor com
+            operação sólida, queremos construir uma rede confiável e de alto impacto.
+            Preencha o formulário abaixo:
           </p>
+        </header>
 
-          <form onSubmit={onSubmit} className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input type="hidden" name="role" value="produtor" />
-            <div className="md:col-span-1">
-              <label className="block text-sm font-medium text-slate-700 mb-1">Nome*</label>
-              <input
-                name="nome"
-                value={state.nome}
-                onChange={onChange}
-                required
-                className="w-full rounded-[4px] border border-slate-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-azul/30"
-              />
-            </div>
-            <div className="md:col-span-1">
-              <label className="block text-sm font-medium text-slate-700 mb-1">Empresa</label>
-              <input
-                name="empresa"
-                value={state.empresa}
-                onChange={onChange}
-                className="w-full rounded-[4px] border border-slate-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-azul/30"
-              />
-            </div>
+        {/* Guia de abas simples (apenas visual por enquanto) */}
+        <nav className="flex gap-4 text-sm">
+          <span className="rounded-full bg-white/70 backdrop-blur px-3 py-1 border border-slate-200">
+            Produtor / Fornecedor
+          </span>
+          <span className="rounded-full bg-white/50 backdrop-blur px-3 py-1 border border-slate-200">
+            Vendedor / Dropshipper
+          </span>
+        </nav>
 
-            <div className="md:col-span-1">
-              <label className="block text-sm font-medium text-slate-700 mb-1">E-mail*</label>
-              <input
-                type="email"
-                name="email"
-                value={state.email}
-                onChange={onChange}
-                required
-                className="w-full rounded-[4px] border border-slate-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-azul/30"
-              />
-            </div>
-            <div className="md:col-span-1">
-              <label className="block text-sm font-medium text-slate-700 mb-1">Site</label>
-              <input
-                name="site"
-                value={state.site}
-                onChange={onChange}
-                placeholder="https://"
-                className="w-full rounded-[4px] border border-slate-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-azul/30"
-              />
-            </div>
+        {/* Produtor / Fornecedor */}
+        <section className="rounded-xl border border-slate-200 bg-white/70 backdrop-blur shadow-sm">
+          <div className="p-6">
+            <h2 className="text-lg font-semibold">Sou Produtor / Fornecedor</h2>
+            <p className="text-slate-600 text-sm">
+              Qualidade, compliance e rastreabilidade. Conte-nos sobre seus produtos e diferenciais.
+            </p>
 
-            <div className="md:col-span-1">
-              <label className="block text-sm font-medium text-slate-700 mb-1">País</label>
-              <input
-                name="pais"
-                value={state.pais}
-                onChange={onChange}
-                className="w-full rounded-[4px] border border-slate-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-azul/30"
-              />
-            </div>
-            <div className="md:col-span-1">
-              <label className="block text-sm font-medium text-slate-700 mb-1">Categorias</label>
-              <input
-                name="categorias"
-                value={state.categorias}
-                onChange={onChange}
-                placeholder="Suplementos, utensílios, cursos..."
-                className="w-full rounded-[4px] border border-slate-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-azul/30"
-              />
-            </div>
+            <form className="mt-6 grid gap-4 md:grid-cols-2">
+              <div className="md:col-span-1">
+                <label className="block text-sm font-medium text-slate-700">Nome*</label>
+                <input className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2" />
+              </div>
+              <div className="md:col-span-1">
+                <label className="block text-sm font-medium text-slate-700">Empresa</label>
+                <input className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2" />
+              </div>
 
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-slate-700 mb-1">Mensagem</label>
-              <textarea
-                name="mensagem"
-                value={state.mensagem}
-                onChange={onChange}
-                rows={4}
-                className="w-full rounded-[4px] border border-slate-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-azul/30"
-              />
-            </div>
+              <div className="md:col-span-1">
+                <label className="block text-sm font-medium text-slate-700">E‑mail*</label>
+                <input type="email" className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2" />
+              </div>
+              <div className="md:col-span-1">
+                <label className="block text-sm font-medium text-slate-700">Site</label>
+                <input className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2" />
+              </div>
 
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Upload (catálogo/portfólio) — PDF até 10MB
-              </label>
-              <input
-                type="file"
-                accept=".pdf"
-                onChange={onFile}
-                className="w-full text-sm"
-              />
-            </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700">País</label>
+                <input className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700">Categorias</label>
+                <input placeholder="Suplementos, utensílios, cursos..."
+                       className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2" />
+              </div>
 
-            <div className="md:col-span-2 flex items-center gap-2">
-              <input
-                id="agree-p"
-                type="checkbox"
-                name="agree"
-                checked={state.agree}
-                onChange={onChange}
-                className="h-4 w-4"
-              />
-              <label htmlFor="agree-p" className="text-sm text-slate-700">
-                Li e concordo com as políticas da Improve.
-              </label>
-            </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-slate-700">Mensagem</label>
+                <textarea rows={4} className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2" />
+              </div>
 
-            <div className="md:col-span-2">
-              <button
-                type="submit"
-                className="rounded-full bg-azul px-6 py-2 text-white font-medium hover:bg-azul/90"
-              >
-                Enviar
-              </button>
-            </div>
-          </form>
-        </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-slate-700">
+                  Upload (catálogo/portfólio) — PDF até 10MB
+                </label>
+                <input type="file" accept="application/pdf"
+                       className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 bg-white" />
+              </div>
 
-        {/* VENDEDORES */}
-        <div id="vendedores" className="mt-10 rounded-[4px] bg-white/95 backdrop-blur shadow-card p-6">
-          <h2 className="text-xl font-semibold text-slate-900">Sou Vendedor / Dropshipper</h2>
-          <p className="text-sm text-slate-600 mt-1">
-            Operação transparente, margens claras e acompanhamento. Diga-nos onde você atua e como podemos crescer juntos.
-          </p>
+              <div className="md:col-span-2 flex items-center gap-2">
+                <input id="agree-1" type="checkbox" className="h-4 w-4 rounded border-slate-300" />
+                <label htmlFor="agree-1" className="text-sm text-slate-700">
+                  Li e concordo com as políticas da Improve.
+                </label>
+              </div>
 
-          <form onSubmit={onSubmit} className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input type="hidden" name="role" value="vendedor" />
-            <div className="md:col-span-1">
-              <label className="block text-sm font-medium text-slate-700 mb-1">Nome*</label>
-              <input
-                name="nome"
-                value={state.nome}
-                onChange={onChange}
-                required
-                className="w-full rounded-[4px] border border-slate-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-azul/30"
-              />
-            </div>
-            <div className="md:col-span-1">
-              <label className="block text-sm font-medium text-slate-700 mb-1">Empresa</label>
-              <input
-                name="empresa"
-                value={state.empresa}
-                onChange={onChange}
-                className="w-full rounded-[4px] border border-slate-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-azul/30"
-              />
-            </div>
+              <div className="md:col-span-2">
+                <button type="button"
+                        className="rounded-md bg-emerald-600 text-white px-4 py-2 font-semibold hover:bg-emerald-700">
+                  Enviar proposta →
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
 
-            <div className="md:col-span-1">
-              <label className="block text-sm font-medium text-slate-700 mb-1">E-mail*</label>
-              <input
-                type="email"
-                name="email"
-                value={state.email}
-                onChange={onChange}
-                required
-                className="w-full rounded-[4px] border border-slate-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-azul/30"
-              />
-            </div>
-            <div className="md:col-span-1">
-              <label className="block text-sm font-medium text-slate-700 mb-1">Site</label>
-              <input
-                name="site"
-                value={state.site}
-                onChange={onChange}
-                placeholder="https://"
-                className="w-full rounded-[4px] border border-slate-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-azul/30"
-              />
-            </div>
+        {/* Vendedor / Dropshipper */}
+        <section className="rounded-xl border border-slate-200 bg-white/70 backdrop-blur shadow-sm">
+          <div className="p-6">
+            <h2 className="text-lg font-semibold">Sou Vendedor / Dropshipper</h2>
+            <p className="text-slate-600 text-sm">
+              Operação transparente, margens claras e acompanhamento. Conte-nos onde atua e como podemos crescer juntos.
+            </p>
 
-            <div className="md:col-span-1">
-              <label className="block text-sm font-medium text-slate-700 mb-1">País</label>
-              <input
-                name="pais"
-                value={state.pais}
-                onChange={onChange}
-                className="w-full rounded-[4px] border border-slate-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-azul/30"
-              />
-            </div>
-            <div className="md:col-span-1">
-              <label className="block text-sm font-medium text-slate-700 mb-1">Categorias</label>
-              <input
-                name="categorias"
-                value={state.categorias}
-                onChange={onChange}
-                placeholder="Suplementos, utensílios, cursos..."
-                className="w-full rounded-[4px] border border-slate-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-azul/30"
-              />
-            </div>
+            <form className="mt-6 grid gap-4 md:grid-cols-2">
+              <div className="md:col-span-1">
+                <label className="block text-sm font-medium text-slate-700">Nome*</label>
+                <input className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2" />
+              </div>
+              <div className="md:col-span-1">
+                <label className="block text-sm font-medium text-slate-700">Empresa</label>
+                <input className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2" />
+              </div>
 
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-slate-700 mb-1">Mensagem</label>
-              <textarea
-                name="mensagem"
-                value={state.mensagem}
-                onChange={onChange}
-                rows={4}
-                className="w-full rounded-[4px] border border-slate-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-azul/30"
-              />
-            </div>
+              <div className="md:col-span-1">
+                <label className="block text-sm font-medium text-slate-700">E‑mail*</label>
+                <input type="email" className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2" />
+              </div>
+              <div className="md:col-span-1">
+                <label className="block text-sm font-medium text-slate-700">Site</label>
+                <input className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2" />
+              </div>
 
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Upload (catálogo/portfólio) — PDF até 10MB
-              </label>
-              <input
-                type="file"
-                accept=".pdf"
-                onChange={onFile}
-                className="w-full text-sm"
-              />
-            </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700">País</label>
+                <input className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700">Categorias</label>
+                <input placeholder="Marketplace, cursos, mídia..."
+                       className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2" />
+              </div>
 
-            <div className="md:col-span-2 flex items-center gap-2">
-              <input
-                id="agree-v"
-                type="checkbox"
-                name="agree"
-                checked={state.agree}
-                onChange={onChange}
-                className="h-4 w-4"
-              />
-              <label htmlFor="agree-v" className="text-sm text-slate-700">
-                Li e concordo com as políticas da Improve.
-              </label>
-            </div>
-
-            <div className="md:col-span-2">
-              <button
-                type="submit"
-                className="rounded-full bg-azul px-6 py-2 text-white font-medium hover:bg-azul/90"
-              >
-                Enviar
-              </button>
-            </div>
-          </form>
-        </div>
-      </section>
-    </main>
+              <div className="md:col-span-2">
+                <button type="button"
+                        className="rounded-md bg-emerald-600 text-white px-4 py-2 font-semibold hover:bg-emerald-700">
+                  Enviar proposta →
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+      </main>
+    </>
   );
 }
