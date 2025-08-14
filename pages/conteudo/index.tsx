@@ -1,29 +1,24 @@
-import Head from 'next/head'
-import Link from 'next/link'
+import Head from "next/head";
+import Link from "next/link";
+import { contentItems } from "@/data/content";
 
-// Importa seus itens de conteúdo do /data/content.ts
-// (o arquivo que você já tem, com newsletters/cursos/ebooks)
-import { contentItems } from '@/data/content'
-
-// Tipagem defensiva para evitar erro caso o arquivo não exporte types
 type AnyItem = {
-  id: string
-  title: string
-  kind: 'newsletter' | 'course' | 'ebook' | string
-  excerpt?: string
-  image?: string
-  url?: string
-}
+  id: string;
+  title: string;
+  kind: "newsletter" | "course" | "ebook" | string;
+  excerpt?: string;
+  image?: string;
+  url?: string;
+};
 
-const FALLBACK_IMG = '/media/content/default-v1.jpg'
+const FALLBACK_IMG = "/media/content/default-v1.jpg";
 
 function Card({ item }: { item: AnyItem }) {
-  const img = item.image || FALLBACK_IMG
-  const isExternal = item.url?.startsWith('http')
+  const img = item.image || FALLBACK_IMG;
+  const isExternal = item.url?.startsWith("http");
   return (
     <div className="rounded-xl border border-slate-200 bg-white/70 shadow-sm hover:shadow-md transition overflow-hidden">
       <div className="aspect-[16/9] bg-slate-100">
-        {/* pode trocar por next/image depois se quiser */}
         <img src={img} alt={item.title} className="w-full h-full object-cover" />
       </div>
       <div className="p-4 space-y-2">
@@ -54,16 +49,14 @@ function Card({ item }: { item: AnyItem }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default function ContentPage() {
-  // normaliza os dados vindos do /data/content.ts
-  const items = (contentItems as unknown as AnyItem[]) || []
-
-  const newsletters = items.filter((i) => i.kind?.toLowerCase() === 'newsletter')
-  const courses     = items.filter((i) => i.kind?.toLowerCase() === 'course')
-  const ebooks      = items.filter((i) => i.kind?.toLowerCase() === 'ebook')
+  const items = (contentItems as unknown as AnyItem[]) || [];
+  const newsletters = items.filter((i) => i.kind?.toLowerCase() === "newsletter");
+  const courses = items.filter((i) => i.kind?.toLowerCase() === "course");
+  const ebooks = items.filter((i) => i.kind?.toLowerCase() === "ebook");
 
   return (
     <>
@@ -71,11 +64,11 @@ export default function ContentPage() {
         <title>Conteúdo — Improve</title>
         <meta
           name="description"
-          content="Conteúdo Premium da Improve: newsletters, cursos e e-books para performance e bem-estar."
+          content="Conteúdo Premium da Improve: newsletters, cursos e e‑books para performance e bem‑estar."
         />
       </Head>
 
-      <main className="container mx-auto px-4 py-10 space-y-16">
+      <main className="mx-auto max-w-6xl px-4 py-10 space-y-16">
         <header className="space-y-2">
           <h1 className="text-3xl font-bold">Conteúdo Premium</h1>
           <p className="text-slate-600">
@@ -87,7 +80,7 @@ export default function ContentPage() {
         <section id="newsletters" className="space-y-6">
           <div className="flex items-baseline justify-between">
             <h2 className="text-xl font-semibold">Newsletters</h2>
-            <Link href="/#content" className="text-emerald-700 hover:underline">
+            <Link href="/#content-preview" className="text-emerald-700 hover:underline">
               Voltar à Home
             </Link>
           </div>
@@ -98,7 +91,7 @@ export default function ContentPage() {
               ))}
             </div>
           ) : (
-            <p className="text-slate-500">Sem items no momento.</p>
+            <p className="text-slate-500">Sem itens no momento.</p>
           )}
         </section>
 
@@ -131,5 +124,5 @@ export default function ContentPage() {
         </section>
       </main>
     </>
-  )
+  );
 }
