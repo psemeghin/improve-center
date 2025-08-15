@@ -2,53 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Ajustes globais */
-html {
+/* Base Improve */
+html, body {
+  @apply bg-areia text-slate-800;
   scroll-behavior: smooth;
 }
 
-body {
-  @apply bg-[#FFF7EA] text-slate-900 antialiased; /* “Areia” suave */
-}
+* { -webkit-tap-highlight-color: transparent; }
 
-/* Cada seção âncora compensa o header sticky (aprox 96px) */
-.anchor-section {
-  scroll-margin-top: 96px;
-}
-
-/* Linha divisória sutil entre blocos */
-.section-hairline {
-  @apply border-t border-slate-200/70;
-}
-
-/* Header com leve blur quando tiver suporte */
-.blur-bg {
-  -webkit-backdrop-filter: saturate(140%) blur(12px);
-  backdrop-filter: saturate(140%) blur(12px);
-}
-
-/* Sublinha animada nos links ativos */
-.nav-link {
-  @apply relative;
-}
-.nav-link::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -6px;
-  height: 2px;
-  width: 100%;
-  background: #0E5162; /* Azul profundo da marca (ajuste se quiser) */
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 220ms ease;
-  border-radius: 999px;
-}
-.nav-link.is-active::after {
-  transform: scaleX(1);
-}
-
-/* Bordas e sombras bem sutis (ASMR vibe) */
-.card-soft {
-  @apply rounded-[10px] shadow-[0_2px_12px_rgba(10,37,64,0.06)] bg-white/80;
-}
+a { @apply outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/60 rounded; }
