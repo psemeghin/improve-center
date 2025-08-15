@@ -1,5 +1,5 @@
-import Layout from "../../components/layout";
-import { products } from "../../data/products";
+import Layout from "@/components/Layout";
+import { products } from "@/data/products";
 import Link from "next/link";
 
 export default function ProductsPage() {
