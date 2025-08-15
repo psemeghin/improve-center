@@ -1,7 +1,6 @@
-// components/Layout.tsx
 import Head from "next/head";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import Header from "./header";
+import Footer from "./footer";
 
 type Props = {
   title?: string;
@@ -12,7 +11,7 @@ type Props = {
 export default function Layout({
   title = "Improve — Wellness. Fitness. Healthness.",
   description = "Transformando vidas pelo equilíbrio: performance, saúde e bem‑estar com ciência e natureza ao seu lado.",
-  children,
+  children
 }: Props) {
   return (
     <>
@@ -22,14 +21,8 @@ export default function Layout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      {/* Cabeçalho fixo/transparente (implementado no Header) */}
       <Header />
-
-      {/* Fundo areia com leve blur/transparência, sombra sutil */}
-      <main className="min-h-screen bg-[#FFF6E3]">
-        {children}
-      </main>
-
+      <main className="min-h-screen">{children}</main>
       <Footer />
     </>
   );
